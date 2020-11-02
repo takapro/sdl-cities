@@ -2,6 +2,8 @@
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include "Shader.h"
+#include "VertexArray.h"
 
 class Game {
 public:
@@ -21,6 +23,9 @@ private:
 
 	SDL_Window* window;
 	SDL_GLContext context;
+
+	Shader* shader;
+	VertexArray* vertexArray;
 
 	bool isRunning;
 	int ticksCount;
