@@ -2,7 +2,7 @@ PROGRAM = game
 OBJS = Main.o Game.o
 
 CXX = c++ -Wall --std=c++17
-LIBS = -lSDL2
+LIBS = -lSDL2 -lglew -framework OpenGL
 
 all: $(PROGRAM)
 
