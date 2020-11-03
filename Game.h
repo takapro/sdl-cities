@@ -8,27 +8,27 @@
 
 class Game {
 public:
-	static constexpr const char* WINDOW_TITLE = "SDL Game (3D)";
+    static constexpr const char* WINDOW_TITLE = "SDL Game (3D)";
 
-	static constexpr int SCREEN_WIDTH = 1024;
-	static constexpr int SCREEN_HEIGHT = 768;
+    static constexpr int SCREEN_WIDTH = 1024;
+    static constexpr int SCREEN_HEIGHT = 768;
 
-	bool Initialize();
-	void RunLoop();
-	void Shutdown();
+    bool Initialize();
+    void RunLoop();
+    void Shutdown();
 
 private:
-	void ProcessInput();
-	void UpdateGame();
-	void GenerateOutput();
+    void ProcessInput();
+    void UpdateGame();
+    void GenerateOutput();
 
-	SDL_Window* window;
-	SDL_GLContext context;
+    SDL_Window* window;
+    SDL_GLContext context;
 
-	Shader* shader;
-	Texture* texture;
-	VertexArray* vertexArray;
+    Shader* shader;
+    Texture* texture;
+    VertexArray* vertexArray;
 
-	bool isRunning;
-	int ticksCount;
+    bool isRunning;
+    int ticksCount;
 };

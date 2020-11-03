@@ -2,13 +2,13 @@
 
 int main(int argc, char** argv)
 {
-	Game game;
+    Game game;
 
-	if (game.Initialize()) {
-		game.RunLoop();
-	}
+    if (game.Initialize()) {
+        game.RunLoop();
+    }
 
-	game.Shutdown();
+    game.Shutdown();
 
-	return 0;
+    return 0;
 }
