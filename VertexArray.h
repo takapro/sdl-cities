@@ -2,8 +2,10 @@
 
 class VertexArray {
 public:
-    VertexArray(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
+    VertexArray() : vertexBuffer(0), indexBuffer(0), vertexArray(0) {}
     ~VertexArray();
+
+    void Init(bool hasUV, const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
 
     void SetActive();
 

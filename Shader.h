@@ -3,7 +3,7 @@
 
 class Shader {
 public:
-    Shader() {}
+    Shader() : vertexShader(0), fragShader(0), shaderProgram(0) {}
     ~Shader();
 
     bool Load(const char* vertName, const char* fragName);

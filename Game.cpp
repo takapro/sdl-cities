@@ -39,19 +39,25 @@ bool Game::Initialize()
 	glGetError();
 
 	shader = new Shader();
-	if (!shader->Load("basic.vert", "basic.frag")) {
+	if (!shader->Load("sprite.vert", "sprite.frag")) {
+		return false;
+	}
+
+	texture = new Texture();
+	if (!texture->Load("earth-a3.png")) {
 		return false;
 	}
 
 	float vertBuffer[] = {
-		 0.0f,  0.5f,  0.0f,
-		 0.5f, -0.5f,  0.0f,
-		-0.5f, -0.5f,  0.0f,
+		 0.0f,  0.5f,  0.0f,  0.5f,  0.0f,
+		 0.5f, -0.5f,  0.0f,  1.0f,  1.0f,
+		-0.5f, -0.5f,  0.0f,  0.0f,  1.0f,
 	};
 	unsigned int indexBuffer[] = {
 		0, 1, 2,
 	};
-	vertexArray = new VertexArray(vertBuffer, 3, indexBuffer, 3);
+	vertexArray = new VertexArray();
+	vertexArray->Init(true, vertBuffer, 3, indexBuffer, 3);
 
 	isRunning = true;
 	ticksCount = SDL_GetTicks();
@@ -103,8 +109,9 @@ void Game::GenerateOutput()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	shader->SetActive();
+	texture->SetActive();
 	vertexArray->SetActive();
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, vertexArray->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
 
 	SDL_GL_SwapWindow(window);
 }
@@ -112,6 +119,7 @@ void Game::GenerateOutput()
 void Game::Shutdown()
 {
 	delete vertexArray;
+	delete texture;
 	delete shader;
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);

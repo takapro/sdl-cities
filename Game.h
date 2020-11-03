@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include "Shader.h"
+#include "Texture.h"
 #include "VertexArray.h"
 
 class Game {
@@ -25,6 +26,7 @@ private:
 	SDL_GLContext context;
 
 	Shader* shader;
+	Texture* texture;
 	VertexArray* vertexArray;
 
 	bool isRunning;
