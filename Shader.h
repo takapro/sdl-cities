@@ -9,6 +9,7 @@ public:
     bool Load(const char* vertName, const char* fragName);
 
     void SetActive();
+    void SetWorldTransform(float rotation);
 
 private:
     bool CompileShader(const char* fileName, GLenum shaderType, GLuint& outShader);
@@ -18,4 +19,6 @@ private:
     GLuint vertexShader;
     GLuint fragShader;
     GLuint shaderProgram;
+
+    GLuint worldTransform;
 };

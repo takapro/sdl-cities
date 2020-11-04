@@ -3,8 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 #include "Shader.h"
-#include "Texture.h"
-#include "VertexArray.h"
+#include "Earth.h"
 
 class Game {
 public:
@@ -26,9 +25,9 @@ private:
     SDL_GLContext context;
 
     Shader* shader;
-    Texture* texture;
-    VertexArray* vertexArray;
+    Earth* earth;
 
     bool isRunning;
     int ticksCount;
+    float rotation;
 };

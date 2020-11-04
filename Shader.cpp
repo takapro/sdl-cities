@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 
 Shader::~Shader()
 {
@@ -21,6 +22,8 @@ bool Shader::Load(const char* vertName, const char* fragName)
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragShader);
     glLinkProgram(shaderProgram);
+
+    worldTransform = glGetUniformLocation(shaderProgram, "uWorldTransform");
 
     return IsValidProgram();
 }
@@ -81,4 +84,18 @@ bool Shader::IsValidProgram()
 void Shader::SetActive()
 {
     glUseProgram(shaderProgram);
+}
+
+void Shader::SetWorldTransform(float rotation)
+{
+    float rad = rotation * static_cast<float>(M_PI) / 180.0f;
+    float cosr = cosf(rad);
+    float sinr = sinf(rad);
+    float matrix[16] = {
+         cosr,  0.0f,  sinr,  0.0f,
+         0.0f,  1.0f,  0.0f,  0.0f,
+        -sinr,  0.0f,  cosr,  0.0f,
+         0.0f,  0.0f,  0.0f,  1.0f,
+    };
+    glUniformMatrix4fv(worldTransform, 1, GL_TRUE, matrix);
 }

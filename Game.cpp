@@ -14,6 +14,7 @@ bool Game::Initialize()
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
@@ -38,29 +39,21 @@ bool Game::Initialize()
     }
     glGetError();
 
+    glEnable(GL_DEPTH_TEST);
+
     shader = new Shader();
     if (!shader->Load("sprite.vert", "sprite.frag")) {
         return false;
     }
 
-    texture = new Texture();
-    if (!texture->Load("earth-a3.png")) {
+    earth = new Earth();
+    if (!earth->Init()) {
         return false;
     }
  
-    float vertBuffer[] = {
-         0.0f,  0.5f,  0.0f,  0.5f,  0.0f,
-         0.5f, -0.5f,  0.0f,  1.0f,  1.0f,
-        -0.5f, -0.5f,  0.0f,  0.0f,  1.0f,
-    };
-    unsigned int indexBuffer[] = {
-        0, 1, 2,
-    };
-    vertexArray = new VertexArray();
-    vertexArray->Init(true, vertBuffer, 3, indexBuffer, 3);
-
     isRunning = true;
     ticksCount = SDL_GetTicks();
+    rotation = 0.0f;
 
     return true;
 }
@@ -101,25 +94,28 @@ void Game::UpdateGame()
         deltaTime = 0.05f;
     }
     ticksCount = SDL_GetTicks();
+
+    rotation += deltaTime * 60.0f;
+    if (rotation >= 360.0f) {
+        rotation -= 360.0f;
+    }
 }
 
 void Game::GenerateOutput()
 {
     glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader->SetActive();
-    texture->SetActive();
-    vertexArray->SetActive();
-    glDrawElements(GL_TRIANGLES, vertexArray->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+    shader->SetWorldTransform(rotation);
+    earth->Render();
 
     SDL_GL_SwapWindow(window);
 }
 
 void Game::Shutdown()
 {
-    delete vertexArray;
-    delete texture;
+    delete earth;
     delete shader;
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
