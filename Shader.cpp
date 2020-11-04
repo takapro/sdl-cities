@@ -89,11 +89,11 @@ void Shader::SetActive()
 void Shader::SetWorldTransform(float rotation)
 {
     float rad = rotation * static_cast<float>(M_PI) / 180.0f;
-    float cosr = cosf(rad);
-    float sinr = sinf(rad);
+    float cosr = cosf(rad) * 0.6f;
+    float sinr = sinf(rad) * 0.6f;
     float matrix[16] = {
          cosr,  0.0f,  sinr,  0.0f,
-         0.0f,  1.0f,  0.0f,  0.0f,
+         0.0f,  0.8f,  0.0f,  0.0f,
         -sinr,  0.0f,  cosr,  0.0f,
          0.0f,  0.0f,  0.0f,  1.0f,
     };
