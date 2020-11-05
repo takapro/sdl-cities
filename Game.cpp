@@ -41,13 +41,16 @@ bool Game::Initialize()
 
     glEnable(GL_DEPTH_TEST);
 
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+
     shader = new Shader();
     if (!shader->Load("sprite.vert", "sprite.frag")) {
         return false;
     }
 
     earth = new Earth();
-    if (!earth->Init()) {
+    if (!earth->Load()) {
         return false;
     }
  

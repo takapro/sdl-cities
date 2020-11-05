@@ -9,12 +9,12 @@ public:
     static constexpr int FACES_PER_HEMISPHERES = 4;
     static constexpr int NUM_FACES = NUM_HEMISPHERES * FACES_PER_HEMISPHERES;
 
-    bool Init();
+    bool Load();
     void Render(Shader* shader, float rotation);
 
 private:
     bool LoadTextures();
-    void InitVertexes();
+    void LoadVertexes();
 
     Texture textures[NUM_FACES];
     VertexArray vertexArrays[NUM_HEMISPHERES];

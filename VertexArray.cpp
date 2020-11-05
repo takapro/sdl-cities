@@ -8,9 +8,9 @@ VertexArray::~VertexArray()
     glDeleteVertexArrays(1, &vertexArray);
 }
 
-void VertexArray::Init(bool hasUV, const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices)
+void VertexArray::Load(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices)
 {
-    int stride = hasUV ? 5 : 3;
+    constexpr int stride = 5;
 
     this->numVerts = numVerts;
     this->numIndices = numIndices;
@@ -29,10 +29,8 @@ void VertexArray::Init(bool hasUV, const float* verts, unsigned int numVerts, co
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * stride, 0);
 
-    if (hasUV) {
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * stride, reinterpret_cast<void*>(sizeof(float) * 3));
-    }
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * stride, reinterpret_cast<void*>(sizeof(float) * 3));
 }
 
 void VertexArray::SetActive()

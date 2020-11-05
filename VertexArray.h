@@ -5,7 +5,7 @@ public:
     VertexArray() : vertexBuffer(0), indexBuffer(0), vertexArray(0) {}
     ~VertexArray();
 
-    void Init(bool hasUV, const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
+    void Load(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
 
     void SetActive();
 

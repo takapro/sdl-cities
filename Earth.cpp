@@ -2,12 +2,12 @@
 #include "GeodesicDome.h"
 #include <GL/glew.h>
 
-bool Earth::Init()
+bool Earth::Load()
 {
     if (!LoadTextures()) {
         return false;
     }
-    InitVertexes();
+    LoadVertexes();
     return true;
 }
 
@@ -26,17 +26,11 @@ bool Earth::LoadTextures()
     return true;
 }
 
-void Earth::InitVertexes()
+void Earth::LoadVertexes()
 {
-    SphericalTriangle tri[NUM_HEMISPHERES] = {
-        { { 0, rightAngle }, { rightAngle, 0 }, { 0, 0 } },
-        { { 0, 0 }, { rightAngle, 0 }, { 0, - rightAngle } },
-    };
-
     for (int i = 0; i < NUM_HEMISPHERES; ++i) {
-        GeodesicDome geom(i == 0);
-        geom.calc(tri[i], 4);
-        geom.initVertexArray(vertexArrays[i]);
+        GeodesicDome dome(i == 0, 4);
+        dome.LoadVertexArray(vertexArrays[i]);
     }
 }
 

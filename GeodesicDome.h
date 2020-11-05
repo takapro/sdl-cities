@@ -1,8 +1,8 @@
 #pragma once
 #include "VertexArray.h"
+#include <string>
+#include <map>
 #include <vector>
-
-constexpr float rightAngle = static_cast<float>(M_PI / 2);
 
 struct Vector2d {
     float x;
@@ -16,21 +16,21 @@ struct Vector3d {
 };
 
 struct SphericalTriangle {
-    Vector2d a;
-    Vector2d b;
-    Vector2d c;
+    std::string a;
+    std::string b;
+    std::string c;
 };
 
 class GeodesicDome {
 public:
-    GeodesicDome(bool north) : north(north) {}
-    void calc(SphericalTriangle tri, int level);
-    void initVertexArray(VertexArray& vertexArray);
+    GeodesicDome(bool north, int level);
+
+    void LoadVertexArray(VertexArray& vertexArray);
 
 private:
-    void emit(Vector2d v);
+    void Divide(SphericalTriangle tri, int level);
 
-    std::vector<float> vertices;
-    std::vector<unsigned int> indices;
+    std::map<std::string, Vector2d> vertices;
+    std::vector<SphericalTriangle> triangles;
     bool north;
 };
