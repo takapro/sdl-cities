@@ -1,8 +1,8 @@
 #include "Shader.h"
+#include "Math.h"
 #include <SDL2/SDL.h>
 #include <fstream>
 #include <sstream>
-#include <math.h>
 
 Shader::~Shader()
 {
@@ -88,14 +88,6 @@ void Shader::SetActive()
 
 void Shader::SetWorldTransform(float rotation)
 {
-    float rad = rotation * static_cast<float>(M_PI) / 180.0f;
-    float cosr = cosf(rad) * 0.6f;
-    float sinr = sinf(rad) * 0.6f;
-    float matrix[16] = {
-         cosr,  0.0f,  sinr,  0.0f,
-         0.0f,  0.8f,  0.0f,  0.0f,
-        -sinr,  0.0f,  cosr,  0.0f,
-         0.0f,  0.0f,  0.0f,  1.0f,
-    };
-    glUniformMatrix4fv(worldTransform, 1, GL_TRUE, matrix);
+    Matrix4d matrix = Matrix4d::rotateY(deg2rad(rotation)) * Matrix4d::scale({ 0.6f, 0.8f, 0.6f });
+    glUniformMatrix4fv(worldTransform, 1, GL_FALSE, matrix.m);
 }

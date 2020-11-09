@@ -1,5 +1,4 @@
 #pragma once
-#include <SOIL/SOIL.h>
 
 class Texture {
 public:

@@ -1,5 +1,5 @@
 PROGRAM = game
-OBJS = Main.o Game.o Shader.o Texture.o VertexArray.o Earth.o GeodesicDome.o
+OBJS = Main.o Game.o Shader.o Texture.o VertexArray.o Earth.o GeodesicDome.o Math.o
 
 CXX = c++ -Wall --std=c++17 -Iinclude
 LIBS = -Llib -lSDL2 -lSOIL -lglew -framework OpenGL -framework Foundation

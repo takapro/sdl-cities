@@ -1,6 +1,5 @@
 #include "GeodesicDome.h"
 #include <algorithm>
-#include <math.h>
 
 constexpr float rightAngle = static_cast<float>(M_PI / 2);
 

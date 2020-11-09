@@ -1,19 +1,9 @@
 #pragma once
+#include "Math.h"
 #include "VertexArray.h"
 #include <string>
 #include <map>
 #include <vector>
-
-struct Vector2d {
-    float x;
-    float y;
-};
-
-struct Vector3d {
-    float x;
-    float y;
-    float z;
-};
 
 struct SphericalTriangle {
     std::string a;
