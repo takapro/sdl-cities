@@ -1,5 +1,4 @@
 #include "Shader.h"
-#include "Math.h"
 #include <SDL2/SDL.h>
 #include <fstream>
 #include <sstream>
@@ -24,6 +23,7 @@ bool Shader::Load(const char* vertName, const char* fragName)
     glLinkProgram(shaderProgram);
 
     worldTransform = glGetUniformLocation(shaderProgram, "uWorldTransform");
+    viewProjection = glGetUniformLocation(shaderProgram, "uViewProjection");
 
     return IsValidProgram();
 }
@@ -86,8 +86,12 @@ void Shader::SetActive()
     glUseProgram(shaderProgram);
 }
 
-void Shader::SetWorldTransform(float rotation)
+void Shader::SetWorldTransform(const Matrix4d& matrix)
 {
-    Matrix4d matrix = Matrix4d::rotateY(deg2rad(rotation)) * Matrix4d::scale({ 0.6f, 0.8f, 0.6f });
     glUniformMatrix4fv(worldTransform, 1, GL_FALSE, matrix.m);
+}
+
+void Shader::SetViewProjection(const Matrix4d& matrix)
+{
+    glUniformMatrix4fv(viewProjection, 1, GL_FALSE, matrix.m);
 }

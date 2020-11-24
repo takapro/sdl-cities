@@ -1,4 +1,5 @@
 #pragma once
+#include "Math.h"
 #include <GL/glew.h>
 
 class Shader {
@@ -9,7 +10,8 @@ public:
     bool Load(const char* vertName, const char* fragName);
 
     void SetActive();
-    void SetWorldTransform(float rotation);
+    void SetWorldTransform(const Matrix4d& matrix);
+    void SetViewProjection(const Matrix4d& matrix);
 
 private:
     bool CompileShader(const char* fileName, GLenum shaderType, GLuint& outShader);
@@ -21,4 +23,5 @@ private:
     GLuint shaderProgram;
 
     GLuint worldTransform;
+    GLuint viewProjection;
 };

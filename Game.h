@@ -1,5 +1,6 @@
 #pragma once
 #include "Shader.h"
+#include "Viewport.h"
 #include "Earth.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
@@ -24,6 +25,7 @@ private:
     SDL_GLContext context;
 
     Shader* shader;
+    Viewport* viewport;
     Earth* earth;
 
     bool isRunning;

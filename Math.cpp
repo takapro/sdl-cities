@@ -26,6 +26,22 @@ Vector3d Vector3d::normalized() const {
     return { x / len, y / len, z / len };
 }
 
+Vector3d Vector3d::negated() const {
+    return { - x, - y, - z };
+}
+
+Vector3d operator -(const Vector3d& vec1, const Vector3d& vec2) {
+    return { vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z };
+}
+
+Vector3d cross(const Vector3d& vec1, const Vector3d& vec2) {
+    return {
+        vec1.y * vec2.z - vec1.z * vec2.y,
+        vec1.z * vec2.x - vec1.x * vec2.z,
+        vec1.x * vec2.y - vec1.y * vec2.x,
+    };
+}
+
 Matrix4d Matrix4d::unit() {
     return {
         1, 0, 0, 0,

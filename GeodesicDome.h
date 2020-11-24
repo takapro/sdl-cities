@@ -15,7 +15,7 @@ class GeodesicDome {
 public:
     GeodesicDome(bool north, int level);
 
-    void LoadVertexArray(VertexArray& vertexArray);
+    void LoadVertexArray(VertexArray& vertexArray, int textureSize);
 
 private:
     void Divide(SphericalTriangle tri, int level);

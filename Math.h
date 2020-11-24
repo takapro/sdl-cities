@@ -20,7 +20,13 @@ struct Vector3d {
 
     float length() const;
     Vector3d normalized() const;
+
+    Vector3d negated() const;
 };
+
+Vector3d operator -(const Vector3d& mat1, const Vector3d& mat2);
+
+Vector3d cross(const Vector3d& vec1, const Vector3d& vec2);
 
 struct Matrix4d {
     float m[16];

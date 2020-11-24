@@ -30,14 +30,14 @@ void Earth::LoadVertexes()
 {
     for (int i = 0; i < NUM_HEMISPHERES; ++i) {
         GeodesicDome dome(i == 0, 4);
-        dome.LoadVertexArray(vertexArrays[i]);
+        dome.LoadVertexArray(vertexArrays[i], textures[0].GetWidth());
     }
 }
 
 void Earth::Render(Shader* shader, float rotation)
 {
     for (int i = 0; i < NUM_FACES; ++i) {
-        shader->SetWorldTransform(rotation + 90.0f * (i % FACES_PER_HEMISPHERES));
+        shader->SetWorldTransform(Matrix4d::rotateY(deg2rad(rotation + 90.0f * (i % FACES_PER_HEMISPHERES))));
         textures[i].SetActive();
         VertexArray& vertexArray = vertexArrays[i / FACES_PER_HEMISPHERES];
         vertexArray.SetActive();

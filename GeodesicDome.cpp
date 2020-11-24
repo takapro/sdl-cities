@@ -4,6 +4,7 @@
 constexpr float rightAngle = static_cast<float>(M_PI / 2);
 
 GeodesicDome::GeodesicDome(bool north, int level)
+    : north(north)
 {
     SphericalTriangle tri { "a", "b", "c" };
     if (north) {
@@ -59,11 +60,14 @@ void GeodesicDome::Divide(SphericalTriangle tri, int level)
     Divide({ ab, bc, ca }, level - 1);
 }
 
-void GeodesicDome::LoadVertexArray(VertexArray& vertexArray)
+void GeodesicDome::LoadVertexArray(VertexArray& vertexArray, int textureSize)
 {
     float* verts = new float[vertices.size() * 5];
     unsigned int* indices = new unsigned int[triangles.size() * 3];
     std::map<std::string, unsigned int> keyIndices;
+
+    float mul = static_cast<float>(textureSize) / (textureSize + 1);
+    float add = 0.5f / textureSize;
 
     unsigned int i = 0;
     for (const auto& [key, vec] : vertices) {
@@ -71,8 +75,8 @@ void GeodesicDome::LoadVertexArray(VertexArray& vertexArray)
         verts[i * 5 + 0] = v.x;
         verts[i * 5 + 1] = v.y;
         verts[i * 5 + 2] = v.z;
-        verts[i * 5 + 3] = vec.x / rightAngle;
-        verts[i * 5 + 4] = (north ? 1.0f : 0.0f) - vec.y / rightAngle;
+        verts[i * 5 + 3] = (vec.x / rightAngle) * mul + add;
+        verts[i * 5 + 4] = ((north ? 1.0f : 0.0f) - vec.y / rightAngle) * mul + add;
         keyIndices[key] = i++;
     }
 

@@ -46,6 +46,10 @@ bool Game::Initialize()
         return false;
     }
 
+    viewport = new Viewport();
+    viewport->LookAt({ 1.1f, 0.0f, 0.1f }, { 1.05f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
+    viewport->Perspective(deg2rad(60.0f), (float) SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
+
     earth = new Earth();
     if (!earth->Load()) {
         return false;
@@ -95,7 +99,7 @@ void Game::UpdateGame()
     }
     ticksCount = SDL_GetTicks();
 
-    rotation += deltaTime * 60.0f;
+    rotation += deltaTime * 10.0f;
     if (rotation >= 360.0f) {
         rotation -= 360.0f;
     }
@@ -107,6 +111,7 @@ void Game::GenerateOutput()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader->SetActive();
+    shader->SetViewProjection(viewport->GetViewProjection());
     earth->Render(shader, rotation);
 
     SDL_GL_SwapWindow(window);
@@ -115,6 +120,7 @@ void Game::GenerateOutput()
 void Game::Shutdown()
 {
     delete earth;
+    delete viewport;
     delete shader;
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
