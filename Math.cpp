@@ -4,7 +4,7 @@ float deg2rad(float deg) {
     return deg * static_cast<float>(M_PI) / 180.0f;
 }
 
-Vector2d Vector2d::rotate(float rad) {
+Vector2d Vector2d::rotate2d(float rad) {
     return { cosf(rad), sinf(rad) };
 }
 
@@ -15,6 +15,11 @@ float Vector2d::length() const {
 Vector2d Vector2d::normalized() const {
     float len = length();
     return { x / len, y / len };
+}
+
+Vector3d Vector3d::rotate3d(Vector2d vec) {
+    float r = cosf(vec.y);
+    return { r * cosf(vec.x), sinf(vec.y), r * sinf(vec.x) };
 }
 
 float Vector3d::length() const {
@@ -97,7 +102,7 @@ Matrix4d Matrix4d::scale(Vector3d vec) {
 }
 
 Matrix4d Matrix4d::rotateX(float rad) {
-    auto [c, s] = Vector2d::rotate(rad);
+    auto [c, s] = Vector2d::rotate2d(rad);
     return {
         1, 0, 0, 0,
         0, c, -s, 0,
@@ -107,7 +112,7 @@ Matrix4d Matrix4d::rotateX(float rad) {
 }
 
 Matrix4d Matrix4d::rotateY(float rad) {
-    auto [c, s] = Vector2d::rotate(rad);
+    auto [c, s] = Vector2d::rotate2d(rad);
     return {
         c, 0, -s, 0,
         0, 1, 0, 0,
@@ -117,7 +122,7 @@ Matrix4d Matrix4d::rotateY(float rad) {
 }
 
 Matrix4d Matrix4d::rotateZ(float rad) {
-    auto [c, s] = Vector2d::rotate(rad);
+    auto [c, s] = Vector2d::rotate2d(rad);
     return {
         c, -s, 0, 0,
         s, c, 0, 0,

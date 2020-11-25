@@ -20,6 +20,7 @@ public:
     void Shutdown();
 
 private:
+    void ResetDestination();
     void ProcessInput();
     void UpdateGame();
     void GenerateOutput();
@@ -32,8 +33,10 @@ private:
     Earth earth;
 
     TTF_Font* largeFont;
+    TTF_Font* smallFont;
     VertexArray textVertexArray;
-    Text destinationText;
+    Text cityText;
+    Text countryText;
 
     bool isRunning;
     int ticksCount;

@@ -7,7 +7,7 @@ struct Vector2d {
     float x;
     float y;
 
-    static Vector2d rotate(float rad);
+    static Vector2d rotate2d(float rad);
 
     float length() const;
     Vector2d normalized() const;
@@ -17,6 +17,8 @@ struct Vector3d {
     float x;
     float y;
     float z;
+
+    static Vector3d rotate3d(Vector2d vec);
 
     float length() const;
     Vector3d normalized() const;

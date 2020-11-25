@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "Cities.h"
+#include <stdlib.h>
+#include <time.h>
 
 bool Game::Initialize()
 {
@@ -54,21 +57,31 @@ bool Game::Initialize()
         return false;
     }
 
-    largeFont = TTF_OpenFont("Font/Good Things.ttf", 128);
+    largeFont = TTF_OpenFont("Font/Good Things.ttf", 112);
     if (!largeFont) {
         SDL_Log("Failed to load font: %s", TTF_GetError());
         return false;
     }
 
+    smallFont = TTF_OpenFont("Font/Good Things.ttf", 56);
+    if (!smallFont) {
+        SDL_Log("Failed to load font: %s", TTF_GetError());
+        return false;
+    }
+
     textVertexArray.InitSquare();
-    destinationText.Init(largeFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.5f });
-    destinationText.SetText("Hello, World!");
+    cityText.Init(largeFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.56f });
+    cityText.SetText("Hello, World!");
+    countryText.Init(smallFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.32f });
+    countryText.SetText(" ");
 
     isRunning = true;
     ticksCount = SDL_GetTicks();
 
     position = { 0.0f, 0.0f, 1.0f };
     direction = { 0.0f, 1.0f, 0.0f };
+
+    srand(time(NULL));
 
     return true;
 }
@@ -82,6 +95,15 @@ void Game::RunLoop()
     }
 }
 
+void Game::ResetDestination()
+{
+    const City& city = City::cities[rand() % City::NUM_CITIES];
+    cityText.SetText(city.name);
+    countryText.SetText(city.country);
+    position = Vector3d::rotate3d({ deg2rad(city.longitude + 180.0f), deg2rad(city.latitude) });
+    direction = cross(cross(position, { 0.0f, 1.0f, 0.0f }), position).normalized();
+}
+
 void Game::ProcessInput()
 {
     SDL_Event event;
@@ -89,6 +111,12 @@ void Game::ProcessInput()
         switch (event.type) {
             case SDL_QUIT:
                 isRunning = false;
+                break;
+
+            case SDL_KEYDOWN:
+                if (event.key.keysym.sym == SDLK_SPACE) {
+                    ResetDestination();
+                }
                 break;
         }
     }
@@ -132,7 +160,7 @@ void Game::UpdateGame()
         position = position.rotated(side, deg2rad(10.0f * deltaTime * move)).normalized();
         direction = cross(side, position).normalized();
     }
-    viewport.LookAt(1.1f * position - 0.15f * direction, direction - 0.4f * position, position);
+    viewport.LookAt(1.1f * position - 0.2f * direction, direction - 0.35f * position, position);
 }
 
 void Game::GenerateOutput()
@@ -151,13 +179,17 @@ void Game::GenerateOutput()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    destinationText.Render(shader);
+    cityText.Render(shader);
+    countryText.Render(shader);
 
     SDL_GL_SwapWindow(window);
 }
 
 void Game::Shutdown()
 {
+    TTF_CloseFont(largeFont);
+    TTF_CloseFont(smallFont);
+    TTF_Quit();
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();

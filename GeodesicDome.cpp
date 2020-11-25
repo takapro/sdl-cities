@@ -19,16 +19,10 @@ GeodesicDome::GeodesicDome(bool north, int level)
     Divide(tri, level);
 }
 
-inline Vector3d calcv3d(Vector2d vec)
-{
-    float r = cosf(vec.y);
-    return Vector3d { cosf(vec.x) * r, sinf(vec.y), sinf(vec.x) * r };
-}
-
 inline Vector2d midpoint(Vector2d a, Vector2d b)
 {
-    Vector3d v1 = calcv3d(a);
-    Vector3d v2 = calcv3d(b);
+    Vector3d v1 = Vector3d::rotate3d(a);
+    Vector3d v2 = Vector3d::rotate3d(b);
     Vector3d v { (v1.x + v2.x) / 2, (v1.y + v2.y) / 2, (v1.z + v2.z) / 2 };
     return Vector2d { atan2f(v.z, v.x), atan2f(v.y, sqrtf(v.z * v.z + v.x * v.x)) };
 }
@@ -68,7 +62,7 @@ void GeodesicDome::LoadVertexArray(VertexArray& vertexArray)
 
     unsigned int i = 0;
     for (const auto& [key, vec] : vertices) {
-        Vector3d v = calcv3d(vec);
+        Vector3d v = Vector3d::rotate3d(vec);
         verts[i * 5 + 0] = v.x;
         verts[i * 5 + 1] = v.y;
         verts[i * 5 + 2] = v.z;
