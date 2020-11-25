@@ -10,7 +10,7 @@ public:
     static constexpr int NUM_FACES = NUM_HEMISPHERES * FACES_PER_HEMISPHERES;
 
     bool Load();
-    void Render(Shader* shader, float rotation);
+    void Render(Shader* shader);
 
 private:
     bool LoadTextures();

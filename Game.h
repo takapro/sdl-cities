@@ -30,5 +30,9 @@ private:
 
     bool isRunning;
     int ticksCount;
-    float rotation;
+
+    int move;
+    int turn;
+    Vector3d position;
+    Vector3d direction;
 };

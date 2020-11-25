@@ -30,8 +30,24 @@ Vector3d Vector3d::negated() const {
     return { - x, - y, - z };
 }
 
+Vector3d Vector3d::rotated(Vector3d axis, float rad) const {
+    return cosf(rad) * *this + sinf(rad) * cross(axis, *this) + (1 - cosf(rad)) * dot(axis, *this) * axis;
+}
+
+Vector3d operator +(const Vector3d& vec1, const Vector3d& vec2) {
+    return { vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z };
+}
+
 Vector3d operator -(const Vector3d& vec1, const Vector3d& vec2) {
     return { vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z };
+}
+
+Vector3d operator *(float scalar, const Vector3d& vec) {
+    return { scalar * vec.x, scalar * vec.y, scalar * vec.z };
+}
+
+float dot(const Vector3d& vec1, const Vector3d& vec2) {
+    return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
 }
 
 Vector3d cross(const Vector3d& vec1, const Vector3d& vec2) {

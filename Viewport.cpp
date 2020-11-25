@@ -1,8 +1,8 @@
 #include "Viewport.h"
 
-void Viewport::LookAt(Vector3d eye, Vector3d center, Vector3d up)
+void Viewport::LookAt(Vector3d eye, Vector3d direction, Vector3d up)
 {
-    Vector3d fwd = (eye - center).normalized();
+    Vector3d fwd = direction.negated().normalized();
     Vector3d side = cross(fwd, up).normalized();
     up = cross(side, fwd);
     Matrix4d m = {

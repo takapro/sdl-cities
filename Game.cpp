@@ -47,8 +47,7 @@ bool Game::Initialize()
     }
 
     viewport = new Viewport();
-    viewport->LookAt({ 1.1f, 0.0f, 0.1f }, { 1.05f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
-    viewport->Perspective(deg2rad(60.0f), (float) SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
+    viewport->Perspective(deg2rad(45.0f), (float) SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
 
     earth = new Earth();
     if (!earth->Load()) {
@@ -57,7 +56,9 @@ bool Game::Initialize()
  
     isRunning = true;
     ticksCount = SDL_GetTicks();
-    rotation = 0.0f;
+
+    position = { 0.0f, 0.0f, 1.0f };
+    direction = { 0.0f, 1.0f, 0.0f };
 
     return true;
 }
@@ -86,6 +87,20 @@ void Game::ProcessInput()
     if (state[SDL_SCANCODE_ESCAPE]) {
         isRunning = false;
     }
+
+    move = 0;
+    if (state[SDL_SCANCODE_UP]) {
+        move = 1;
+    } else if (state[SDL_SCANCODE_DOWN]) {
+        move = -1;
+    }
+
+    turn = 0;
+    if (state[SDL_SCANCODE_LEFT]) {
+        turn = -1;
+    } else if (state[SDL_SCANCODE_RIGHT]) {
+        turn = 1;
+    }
 }
 
 void Game::UpdateGame()
@@ -99,10 +114,15 @@ void Game::UpdateGame()
     }
     ticksCount = SDL_GetTicks();
 
-    rotation += deltaTime * 10.0f;
-    if (rotation >= 360.0f) {
-        rotation -= 360.0f;
+    if (turn != 0) {
+        direction = direction.rotated(position, deg2rad(30.0f * deltaTime * turn)).normalized();
     }
+    if (move != 0) {
+        Vector3d side = cross(position, direction).normalized();
+        position = position.rotated(side, deg2rad(10.0f * deltaTime * move)).normalized();
+        direction = cross(side, position).normalized();
+    }
+    viewport->LookAt(1.1f * position - 0.1f * direction, direction - 0.5f * position, position);
 }
 
 void Game::GenerateOutput()
@@ -112,7 +132,7 @@ void Game::GenerateOutput()
 
     shader->SetActive();
     shader->SetViewProjection(viewport->GetViewProjection());
-    earth->Render(shader, rotation);
+    earth->Render(shader);
 
     SDL_GL_SwapWindow(window);
 }

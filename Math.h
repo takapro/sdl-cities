@@ -22,10 +22,16 @@ struct Vector3d {
     Vector3d normalized() const;
 
     Vector3d negated() const;
+
+    Vector3d rotated(Vector3d axis, float rad) const;
 };
 
-Vector3d operator -(const Vector3d& mat1, const Vector3d& mat2);
+Vector3d operator +(const Vector3d& vec1, const Vector3d& vec2);
+Vector3d operator -(const Vector3d& vec1, const Vector3d& vec2);
 
+Vector3d operator *(float scalar, const Vector3d& vec);
+
+float dot(const Vector3d& vec1, const Vector3d& vec2);
 Vector3d cross(const Vector3d& vec1, const Vector3d& vec2);
 
 struct Matrix4d {
