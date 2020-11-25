@@ -2,8 +2,11 @@
 #include "Shader.h"
 #include "Viewport.h"
 #include "Earth.h"
+#include "VertexArray.h"
+#include "Text.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
+#include <SDL2/SDL_ttf.h>
 
 class Game {
 public:
@@ -24,9 +27,13 @@ private:
     SDL_Window* window;
     SDL_GLContext context;
 
-    Shader* shader;
-    Viewport* viewport;
-    Earth* earth;
+    Shader shader;
+    Viewport viewport;
+    Earth earth;
+
+    TTF_Font* largeFont;
+    VertexArray textVertexArray;
+    Text destinationText;
 
     bool isRunning;
     int ticksCount;

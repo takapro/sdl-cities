@@ -14,8 +14,8 @@ bool Earth::Load()
 bool Earth::LoadTextures()
 {
     const char* fileNames[] = {
-        "earth-a1.png", "earth-a2.png", "earth-a3.png", "earth-a4.png",
-        "earth-b1.png", "earth-b2.png", "earth-b3.png", "earth-b4.png",
+        "Earth/earth-a1.png", "Earth/earth-a2.png", "Earth/earth-a3.png", "Earth/earth-a4.png",
+        "Earth/earth-b1.png", "Earth/earth-b2.png", "Earth/earth-b3.png", "Earth/earth-b4.png",
     };
 
     for (int i = 0; i < NUM_FACES; ++i) {
@@ -30,14 +30,14 @@ void Earth::LoadVertexes()
 {
     for (int i = 0; i < NUM_HEMISPHERES; ++i) {
         GeodesicDome dome(i == 0, 5);
-        dome.LoadVertexArray(vertexArrays[i], textures[0].GetWidth());
+        dome.LoadVertexArray(vertexArrays[i]);
     }
 }
 
-void Earth::Render(Shader* shader)
+void Earth::Render(Shader& shader)
 {
     for (int i = 0; i < NUM_FACES; ++i) {
-        shader->SetWorldTransform(Matrix4d::rotateY(deg2rad(90.0f * (i % FACES_PER_HEMISPHERES))));
+        shader.SetWorldTransform(Matrix4d::rotateY(deg2rad(90.0f * (i % FACES_PER_HEMISPHERES))));
         textures[i].SetActive();
         VertexArray& vertexArray = vertexArrays[i / FACES_PER_HEMISPHERES];
         vertexArray.SetActive();

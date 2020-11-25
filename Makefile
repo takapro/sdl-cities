@@ -1,8 +1,8 @@
 PROGRAM = game
-OBJS = Main.o Game.o Shader.o Texture.o VertexArray.o Earth.o GeodesicDome.o Math.o Viewport.o
+OBJS = Main.o Game.o Shader.o Texture.o VertexArray.o Earth.o GeodesicDome.o Math.o Viewport.o Text.o
 
 CXX = c++ -Wall --std=c++17 -Iinclude
-LIBS = -Llib -lSDL2 -lSOIL -lglew -framework OpenGL -framework Foundation
+LIBS = -Llib -lSDL2 -lSDL2_ttf -lSOIL -lglew -framework OpenGL -framework Foundation
 
 all: $(PROGRAM)
 

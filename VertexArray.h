@@ -5,7 +5,8 @@ public:
     VertexArray() : vertexBuffer(0), indexBuffer(0), vertexArray(0) {}
     ~VertexArray();
 
-    void Load(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
+    void Init(const float* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices);
+    void InitSquare();
 
     void SetActive();
 

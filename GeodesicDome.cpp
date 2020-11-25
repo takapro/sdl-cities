@@ -60,14 +60,11 @@ void GeodesicDome::Divide(SphericalTriangle tri, int level)
     Divide({ ab, bc, ca }, level - 1);
 }
 
-void GeodesicDome::LoadVertexArray(VertexArray& vertexArray, int textureSize)
+void GeodesicDome::LoadVertexArray(VertexArray& vertexArray)
 {
     float* verts = new float[vertices.size() * 5];
     unsigned int* indices = new unsigned int[triangles.size() * 3];
     std::map<std::string, unsigned int> keyIndices;
-
-    float offset = 0.5f / textureSize;
-    float scale = static_cast<float>(textureSize) / (textureSize + 1);
 
     unsigned int i = 0;
     for (const auto& [key, vec] : vertices) {
@@ -75,8 +72,8 @@ void GeodesicDome::LoadVertexArray(VertexArray& vertexArray, int textureSize)
         verts[i * 5 + 0] = v.x;
         verts[i * 5 + 1] = v.y;
         verts[i * 5 + 2] = v.z;
-        verts[i * 5 + 3] = offset + scale * (vec.x / rightAngle);
-        verts[i * 5 + 4] = offset + scale * ((north ? 1.0f : 0.0f) - vec.y / rightAngle);
+        verts[i * 5 + 3] = vec.x / rightAngle;
+        verts[i * 5 + 4] = (north ? 1.0f : 0.0f) - vec.y / rightAngle;
         keyIndices[key] = i++;
     }
 
@@ -88,7 +85,7 @@ void GeodesicDome::LoadVertexArray(VertexArray& vertexArray, int textureSize)
         ++i;
     }
 
-    vertexArray.Load(verts, vertices.size(), indices, triangles.size() * 3);
+    vertexArray.Init(verts, vertices.size(), indices, triangles.size() * 3);
 
     delete[] indices;
     delete[] verts;

@@ -7,6 +7,11 @@ bool Game::Initialize()
         return false;
     }
 
+    if (TTF_Init() != 0) {
+        SDL_Log("Unable to initialize TTF: %s", TTF_GetError());
+        return false;
+    }
+
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -39,21 +44,26 @@ bool Game::Initialize()
     }
     glGetError();
 
-    glEnable(GL_DEPTH_TEST);
-
-    shader = new Shader();
-    if (!shader->Load("sprite.vert", "sprite.frag")) {
+    if (!shader.Load("sprite.vert", "sprite.frag")) {
         return false;
     }
 
-    viewport = new Viewport();
-    viewport->Perspective(deg2rad(45.0f), (float) SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
+    viewport.Perspective(deg2rad(45.0f), (float) SCREEN_WIDTH / SCREEN_HEIGHT, 0.1f, 100.0f);
 
-    earth = new Earth();
-    if (!earth->Load()) {
+    if (!earth.Load()) {
         return false;
     }
- 
+
+    largeFont = TTF_OpenFont("Font/Good Things.ttf", 128);
+    if (!largeFont) {
+        SDL_Log("Failed to load font: %s", TTF_GetError());
+        return false;
+    }
+
+    textVertexArray.InitSquare();
+    destinationText.Init(largeFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.5f });
+    destinationText.SetText("Hello, World!");
+
     isRunning = true;
     ticksCount = SDL_GetTicks();
 
@@ -122,26 +132,32 @@ void Game::UpdateGame()
         position = position.rotated(side, deg2rad(10.0f * deltaTime * move)).normalized();
         direction = cross(side, position).normalized();
     }
-    viewport->LookAt(1.1f * position - 0.1f * direction, direction - 0.5f * position, position);
+    viewport.LookAt(1.1f * position - 0.15f * direction, direction - 0.4f * position, position);
 }
 
 void Game::GenerateOutput()
 {
-    glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    shader->SetActive();
-    shader->SetViewProjection(viewport->GetViewProjection());
-    earth->Render(shader);
+    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_BLEND);
+
+    shader.SetActive();
+    shader.SetViewProjection(viewport.GetViewProjection());
+    earth.Render(shader);
+
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    destinationText.Render(shader);
 
     SDL_GL_SwapWindow(window);
 }
 
 void Game::Shutdown()
 {
-    delete earth;
-    delete viewport;
-    delete shader;
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
