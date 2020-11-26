@@ -38,6 +38,5 @@ void Text::Render(Shader& shader)
     shader.SetWorldTransform(matrix);
     shader.SetViewProjection(Matrix4d::unit());
     glBindTexture(GL_TEXTURE_2D, textureId);
-    vertexArray->SetActive();
-    glDrawElements(GL_TRIANGLES, vertexArray->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+    vertexArray->Render();
 }

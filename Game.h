@@ -1,48 +1,32 @@
 #pragma once
-#include "Shader.h"
-#include "Viewport.h"
-#include "Earth.h"
-#include "VertexArray.h"
-#include "Text.h"
+#include <GL/glew.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
-#include <SDL2/SDL_ttf.h>
 
 class Game {
 public:
-    static constexpr const char* WINDOW_TITLE = "SDL Game (3D)";
+    static constexpr const char* WINDOW_TITLE = "World Cities (CMPT 1267 Project 3)";
 
     static constexpr int SCREEN_WIDTH = 1024;
     static constexpr int SCREEN_HEIGHT = 768;
 
+    ~Game();
+
     bool Initialize();
     void RunLoop();
-    void Shutdown();
 
-private:
-    void ResetDestination();
+protected:
     void ProcessInput();
     void UpdateGame();
-    void GenerateOutput();
+
+    virtual void ProcessSpaceKey() = 0;
+    virtual void ProcessKeyboard(const Uint8* state) = 0;
+    virtual void UpdateGame(float deltaTime) = 0;
+    virtual void GenerateOutput() = 0;
 
     SDL_Window* window;
     SDL_GLContext context;
 
-    Shader shader;
-    Viewport viewport;
-    Earth earth;
-
-    TTF_Font* largeFont;
-    TTF_Font* smallFont;
-    VertexArray textVertexArray;
-    Text cityText;
-    Text countryText;
-
     bool isRunning;
     int ticksCount;
-
-    int move;
-    int turn;
-    Vector3d position;
-    Vector3d direction;
 };

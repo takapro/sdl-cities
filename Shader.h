@@ -4,7 +4,6 @@
 
 class Shader {
 public:
-    Shader() : vertexShader(0), fragShader(0), shaderProgram(0) {}
     ~Shader();
 
     bool Load(const char* vertName, const char* fragName);
@@ -18,9 +17,9 @@ private:
     bool IsCompiled(GLuint shader);
     bool IsValidProgram();
 
-    GLuint vertexShader;
-    GLuint fragShader;
-    GLuint shaderProgram;
+    GLuint vertexShader = 0;
+    GLuint fragShader = 0;
+    GLuint shaderProgram = 0;
 
     GLuint worldTransform;
     GLuint viewProjection;

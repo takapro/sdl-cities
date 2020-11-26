@@ -49,7 +49,8 @@ void VertexArray::InitSquare()
     Init(vertices, 4, indices, 6);
 }
 
-void VertexArray::SetActive()
+void VertexArray::Render()
 {
     glBindVertexArray(vertexArray);
+    glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, nullptr);
 }

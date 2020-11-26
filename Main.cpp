@@ -1,14 +1,12 @@
-#include "Game.h"
+#include "CitiesGame.h"
 
 int main(int argc, char** argv)
 {
-    Game game;
+    CitiesGame game;
 
     if (game.Initialize()) {
         game.RunLoop();
     }
-
-    game.Shutdown();
 
     return 0;
 }

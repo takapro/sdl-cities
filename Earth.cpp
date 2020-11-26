@@ -39,8 +39,6 @@ void Earth::Render(Shader& shader)
     for (int i = 0; i < NUM_FACES; ++i) {
         shader.SetWorldTransform(Matrix4d::rotateY(deg2rad(90.0f * (i % FACES_PER_HEMISPHERES))));
         textures[i].SetActive();
-        VertexArray& vertexArray = vertexArrays[i / FACES_PER_HEMISPHERES];
-        vertexArray.SetActive();
-        glDrawElements(GL_TRIANGLES, vertexArray.GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+        vertexArrays[i / FACES_PER_HEMISPHERES].Render();
     }
 }

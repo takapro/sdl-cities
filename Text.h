@@ -5,7 +5,6 @@
 
 class Text {
 public:
-    Text() : textureId(0) {};
     ~Text();
 
     void Init(TTF_Font* font, VertexArray* vertexArray, Vector2d screenSize, Vector2d position);
@@ -19,6 +18,6 @@ private:
     Vector2d screenSize;
     Vector2d position;
 
-    unsigned int textureId;
+    unsigned int textureId = 0;
     Matrix4d matrix;
 };

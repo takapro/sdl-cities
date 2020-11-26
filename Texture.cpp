@@ -10,7 +10,7 @@ Texture::~Texture()
 
 bool Texture::Load(const char* fileName)
 {
-    int channels = 0;
+    int width, height, channels;
     unsigned char* image = SOIL_load_image(fileName, &width, &height, &channels, SOIL_LOAD_AUTO);
     if (image == nullptr) {
         SDL_Log("Failed to load texture %s", fileName);
