@@ -63,7 +63,7 @@ Vector3d cross(const Vector3d& vec1, const Vector3d& vec2) {
     };
 }
 
-Matrix4d Matrix4d::unit() {
+Matrix4d Matrix4d::identity() {
     return {
         1, 0, 0, 0,
         0, 1, 0, 0,

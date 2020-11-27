@@ -5,13 +5,13 @@ void Viewport::LookAt(Vector3d eye, Vector3d direction, Vector3d up)
     Vector3d fwd = direction.negated().normalized();
     Vector3d side = cross(fwd, up).normalized();
     up = cross(side, fwd);
-    Matrix4d m = {
+    Matrix4d rotation = {
         side.x, side.y, side.z, 0,
         up.x, up.y, up.z, 0,
         fwd.x, fwd.y, fwd.z, 0,
         0, 0, 0, 1,
     };
-    view = m * Matrix4d::move(eye.negated());
+    view = rotation * Matrix4d::move(eye.negated());
 }
 
 void Viewport::Perspective(float fovx, float aspect, float near, float far)

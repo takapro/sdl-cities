@@ -36,7 +36,7 @@ void Text::SetText(const char* text)
 void Text::Render(Shader& shader)
 {
     shader.SetWorldTransform(matrix);
-    shader.SetViewProjection(Matrix4d::unit());
+    shader.SetViewProjection(Matrix4d::identity());
     glBindTexture(GL_TEXTURE_2D, textureId);
     vertexArray->Render();
 }

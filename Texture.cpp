@@ -35,6 +35,18 @@ bool Texture::Load(const char* fileName)
     return true;
 }
 
+void Texture::InitRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+{
+    unsigned char pixel[] = { r, g, b, a };
+
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
 void Texture::SetActive()
 {
     glBindTexture(GL_TEXTURE_2D, textureId);

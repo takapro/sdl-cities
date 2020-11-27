@@ -43,7 +43,7 @@ void VertexArray::InitSquare()
     };
     unsigned int indices[] = {
         0, 1, 2,
-        2, 3, 0
+        2, 3, 0,
     };
 
     Init(vertices, 4, indices, 6);

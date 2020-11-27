@@ -30,6 +30,9 @@ bool CitiesGame::Initialize()
         return false;
     }
 
+    cityActor.InitCity();
+    shipActor.InitShip();
+
     largeFont = TTF_OpenFont("Font/Good Things.ttf", 112);
     if (!largeFont) {
         SDL_Log("Failed to load font: %s", TTF_GetError());
@@ -61,6 +64,7 @@ void CitiesGame::ProcessSpaceKey()
     countryText.SetText(city.country);
     position = Vector3d::rotate3d({ deg2rad(city.longitude + 180.0f), deg2rad(city.latitude) });
     direction = cross(cross(position, { 0.0f, 1.0f, 0.0f }), position).normalized();
+    cityActor.SetPosition(position, direction);
 }
 
 void CitiesGame::ProcessKeyboard(const Uint8* state)
@@ -91,6 +95,7 @@ void CitiesGame::UpdateGame(float deltaTime)
         direction = cross(side, position).normalized();
     }
     viewport.LookAt(1.1f * position - 0.2f * direction, direction - 0.35f * position, position);
+    shipActor.SetPosition(position, direction);
 }
 
 void CitiesGame::GenerateOutput()
@@ -104,6 +109,9 @@ void CitiesGame::GenerateOutput()
     shader.SetActive();
     shader.SetViewProjection(viewport.GetViewProjection());
     earth.Render(shader);
+
+    cityActor.Render(shader);
+    shipActor.Render(shader);
 
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);

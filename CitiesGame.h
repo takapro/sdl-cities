@@ -3,7 +3,7 @@
 #include "Shader.h"
 #include "Viewport.h"
 #include "Earth.h"
-#include "VertexArray.h"
+#include "Actor.h"
 #include "Text.h"
 
 class CitiesGame : public Game {
@@ -21,6 +21,9 @@ private:
     Shader shader;
     Viewport viewport;
     Earth earth;
+
+    Actor cityActor;
+    Actor shipActor;
 
     TTF_Font* largeFont;
     TTF_Font* smallFont;

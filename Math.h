@@ -42,7 +42,7 @@ Vector3d cross(const Vector3d& vec1, const Vector3d& vec2);
 struct Matrix4d {
     float m[16];
 
-    static Matrix4d unit();
+    static Matrix4d identity();
 
     static Matrix4d move(Vector3d vec);
     static Matrix4d scale(float s);
