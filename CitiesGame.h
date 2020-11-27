@@ -8,12 +8,14 @@
 
 class CitiesGame : public Game {
 public:
+    static constexpr float EARTH_RADIUS = 6371.0f;
+
     ~CitiesGame();
 
     bool Initialize();
 
 private:
-    void ProcessSpaceKey();
+    void ResetDestination();
     void ProcessKeyboard(const Uint8* state);
     void UpdateGame(float deltaTime);
     void GenerateOutput();
@@ -28,8 +30,11 @@ private:
     TTF_Font* largeFont;
     TTF_Font* smallFont;
     VertexArray textVertexArray;
+
     Text cityText;
     Text countryText;
+    Text distanceText;
+    Vector3d destination;
 
     int move;
     int turn;

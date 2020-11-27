@@ -77,7 +77,7 @@ void Game::ProcessInput()
 
             case SDL_KEYDOWN:
                 if (event.key.keysym.sym == SDLK_SPACE) {
-                    ProcessSpaceKey();
+                    ResetDestination();
                 }
                 break;
         }

@@ -1,6 +1,7 @@
 #include "CitiesGame.h"
 #include "Cities.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 CitiesGame::~CitiesGame()
 {
@@ -47,9 +48,9 @@ bool CitiesGame::Initialize()
 
     textVertexArray.InitSquare();
     cityText.Init(largeFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.56f });
-    cityText.SetText("Hello, World!");
     countryText.Init(smallFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.32f });
-    countryText.SetText(" ");
+    distanceText.Init(smallFont, &textVertexArray, { SCREEN_WIDTH, SCREEN_HEIGHT }, { 0.0f, 0.8f });
+    ResetDestination();
 
     position = { 0.0f, 0.0f, 1.0f };
     direction = { 0.0f, 1.0f, 0.0f };
@@ -57,14 +58,14 @@ bool CitiesGame::Initialize()
     return true;
 }
 
-void CitiesGame::ProcessSpaceKey()
+void CitiesGame::ResetDestination()
 {
     const City& city = City::cities[rand() % City::NUM_CITIES];
     cityText.SetText(city.name);
     countryText.SetText(city.country);
-    position = Vector3d::rotate3d({ deg2rad(city.longitude + 180.0f), deg2rad(city.latitude) });
-    direction = cross(cross(position, { 0.0f, 1.0f, 0.0f }), position).normalized();
-    cityActor.SetPosition(position, direction);
+    destination = Vector3d::rotate3d({ deg2rad(city.longitude + 180.0f), deg2rad(city.latitude) });
+    Vector3d direction = cross(cross(destination, { 0.0f, 1.0f, 0.0f }), destination).normalized();
+    cityActor.SetPosition(destination, direction);
 }
 
 void CitiesGame::ProcessKeyboard(const Uint8* state)
@@ -96,6 +97,18 @@ void CitiesGame::UpdateGame(float deltaTime)
     }
     viewport.LookAt(1.1f * position - 0.2f * direction, direction - 0.35f * position, position);
     shipActor.SetPosition(position, direction);
+
+    int distance;
+    while ((distance = static_cast<int>(2 * EARTH_RADIUS * asinf((destination - position).length() / 2))) < 100) {
+        ResetDestination();
+    }
+    char distanceString[16];
+    if (distance >= 1000) {
+        snprintf(distanceString, sizeof distanceString, "%d,%03d km", distance / 1000, distance % 1000);
+    } else {
+        snprintf(distanceString, sizeof distanceString, "%d km", distance);
+    }
+    distanceText.SetText(distanceString);
 }
 
 void CitiesGame::GenerateOutput()
@@ -119,6 +132,7 @@ void CitiesGame::GenerateOutput()
 
     cityText.Render(shader);
     countryText.Render(shader);
+    distanceText.Render(shader);
 
     SDL_GL_SwapWindow(window);
 }

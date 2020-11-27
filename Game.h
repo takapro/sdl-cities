@@ -19,7 +19,7 @@ protected:
     void ProcessInput();
     void UpdateGame();
 
-    virtual void ProcessSpaceKey() = 0;
+    virtual void ResetDestination() = 0;
     virtual void ProcessKeyboard(const Uint8* state) = 0;
     virtual void UpdateGame(float deltaTime) = 0;
     virtual void GenerateOutput() = 0;
