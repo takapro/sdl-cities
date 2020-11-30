@@ -111,7 +111,7 @@ City City::cities[NUM_CITIES] = {
     { "Dublin", "Ireland", 53.33306f, -6.24889f },
     { "Düsseldorf", "Germany", 51.22172f, 6.77616f },
     { "Frankfurt", "Germany", 50.11552f, 8.68417f },
-    { "Geneva", "United States", 41.88753f, -88.30535f },
+    { "Genève", "Switzerland", 46.20222f, 6.14569f },
     { "Helsinki", "Finland", 60.16952f, 24.93545f },
     { "Istanbul", "Turkey", 41.01384f, 28.94966f },
     { "Kyiv", "Ukraine", 50.45466f, 30.5238f },
