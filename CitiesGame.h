@@ -40,4 +40,7 @@ private:
     int turn;
     Vector3d position;
     Vector3d direction;
+
+    int cameraInput;
+    float cameraDistance;
 };

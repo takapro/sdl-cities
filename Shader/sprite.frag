@@ -8,5 +8,11 @@ uniform sampler2D uTexture;
 
 void main()
 {
-	outColor = texture(uTexture, fragTexCoord);
+	vec4 color = texture(uTexture, fragTexCoord);
+
+	if (!gl_FrontFacing) {
+		outColor = color;
+	} else {
+		outColor = vec4(1.0 - color.r, 1.0 - color.g, 1.0 - color.b, color.a);
+	}
 }

@@ -55,6 +55,9 @@ bool CitiesGame::Initialize()
     position = { 0.0f, 0.0f, 1.0f };
     direction = { 0.0f, 1.0f, 0.0f };
 
+    cameraInput = 2;
+    cameraDistance = 2.0f;
+
     return true;
 }
 
@@ -83,6 +86,17 @@ void CitiesGame::ProcessKeyboard(const Uint8* state)
     } else if (state[SDL_SCANCODE_RIGHT]) {
         turn = 1;
     }
+
+    if (cameraInput != 2) {
+        cameraInput = 0;
+    }
+    if (state[SDL_SCANCODE_A]) {
+        cameraInput = -1;
+    } else if (state[SDL_SCANCODE_S]) {
+        cameraInput = 2;
+    } else if (state[SDL_SCANCODE_D]) {
+        cameraInput = 1;
+    }
 }
 
 void CitiesGame::UpdateGame(float deltaTime)
@@ -95,7 +109,19 @@ void CitiesGame::UpdateGame(float deltaTime)
         position = position.rotated(side, deg2rad(10.0f * deltaTime * move)).normalized();
         direction = cross(side, position).normalized();
     }
-    viewport.LookAt(1.1f * position - 0.2f * direction, direction - 0.35f * position, position);
+
+    if (cameraInput == 2) {
+        if (cameraDistance < 1.0f) {
+            cameraDistance = fminf(cameraDistance + deltaTime, 1.0f);
+        } else if (cameraDistance > 1.0f) {
+            cameraDistance = fmaxf(cameraDistance - deltaTime, 1.0f);
+        }
+    } else if (cameraInput != 0) {
+        cameraDistance += cameraInput * deltaTime / 2;
+    }
+
+    viewport.LookAt(cameraDistance * (1.1f * position - 0.2f * direction),
+        direction - (0.35f + 2 * (cameraDistance - 1.0f)) * position, position);
     shipActor.SetPosition(position, direction);
 
     int distance;
