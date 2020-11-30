@@ -14,8 +14,8 @@ bool Earth::Load()
 bool Earth::LoadTextures()
 {
     const char* fileNames[] = {
-        "Earth/earth-a1.png", "Earth/earth-a2.png", "Earth/earth-a3.png", "Earth/earth-a4.png",
-        "Earth/earth-b1.png", "Earth/earth-b2.png", "Earth/earth-b3.png", "Earth/earth-b4.png",
+        "Earth/earth-a1.jpg", "Earth/earth-a2.jpg", "Earth/earth-a3.jpg", "Earth/earth-a4.jpg",
+        "Earth/earth-b1.jpg", "Earth/earth-b2.jpg", "Earth/earth-b3.jpg", "Earth/earth-b4.jpg",
     };
 
     for (int i = 0; i < NUM_FACES; ++i) {
